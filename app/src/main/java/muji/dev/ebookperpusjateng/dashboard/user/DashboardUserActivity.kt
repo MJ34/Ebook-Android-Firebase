@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
@@ -14,8 +15,8 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import muji.dev.ebookperpusjateng.MainActivity
+import muji.dev.ebookperpusjateng.dashboard.profile.ProfileActivity
 import muji.dev.ebookperpusjateng.dashboard.admin.categories.models.ModelCategory
-import muji.dev.ebookperpusjateng.dashboard.admin.categories.models.ModelPdf
 import muji.dev.ebookperpusjateng.databinding.ActivityDashboardUserBinding
 
 class DashboardUserActivity : AppCompatActivity() {
@@ -44,6 +45,11 @@ class DashboardUserActivity : AppCompatActivity() {
             firebaseAuth.signOut()
             startActivity(Intent(this, MainActivity::class.java))
             finish()
+        }
+
+        // Handle click, open profile
+        dashboardUserBinding.profileBtn.setOnClickListener {
+            startActivity(Intent(this, ProfileActivity::class.java))
         }
     }
 
@@ -156,18 +162,26 @@ class DashboardUserActivity : AppCompatActivity() {
         }
     }
 
+    //this activity can be opened with or without login, so hide logout and profile button when user not logged in
     private fun checkUser() {
         // Get current user
         val firebaseUser = firebaseAuth.currentUser
         if (firebaseUser == null) {
             // Not logged in, user can stay in user dashboard without login to
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
+            dashboardUserBinding.subTitleTv.text = "Belum Login"
+
+            //hide profile and logout
+            dashboardUserBinding.profileBtn.visibility = View.GONE
+            dashboardUserBinding.logoutBtn.visibility = View.GONE
         } else {
             //Logged in, get and show user info
             val email = firebaseUser.email
             // Set to textview of toolbar
             dashboardUserBinding.subTitleTv.text = email
+
+            //show profile and logout
+            dashboardUserBinding.profileBtn.visibility = View.VISIBLE
+            dashboardUserBinding.logoutBtn.visibility = View.VISIBLE
         }
     }
 }

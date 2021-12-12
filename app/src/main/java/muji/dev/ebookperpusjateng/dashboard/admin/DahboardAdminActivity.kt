@@ -11,6 +11,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import muji.dev.ebookperpusjateng.MainActivity
+import muji.dev.ebookperpusjateng.dashboard.profile.ProfileActivity
 import muji.dev.ebookperpusjateng.dashboard.admin.categories.AdapterCategory
 import muji.dev.ebookperpusjateng.dashboard.admin.categories.CategoryAddActivity
 import muji.dev.ebookperpusjateng.dashboard.admin.categories.PdfAddActivity
@@ -73,6 +74,11 @@ class DahboardAdminActivity : AppCompatActivity() {
         // Handle click, start add pdf page
         dashboardAdminBinding.addPdfFab.setOnClickListener {
             startActivity(Intent(this, PdfAddActivity::class.java))
+        }
+
+        // Handle click, open profile
+        dashboardAdminBinding.profileBtn.setOnClickListener {
+            startActivity(Intent(this, ProfileActivity::class.java))
         }
     }
 
