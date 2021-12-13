@@ -216,11 +216,11 @@ class MyAplication:Application() {
                 })
         }
 
-        public fun removeToFavorite(context: Context, bookId: String) {
+     public fun removeToFavorite(context: Context, bookId: String) {
             val TAG = "REMOVE_FAV_TAG"
             Log.d(TAG, "removeToFavorite: Removing to fav")
 
-            val firebaseAuth = FirebaseAuth.getInstance()
+            val firebaseAuth = FirebaseAuth.getInstance();
 
             //database ref
             val ref = FirebaseDatabase.getInstance().getReference("Users")

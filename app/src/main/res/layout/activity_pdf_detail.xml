@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     tools:context=".dashboard.admin.detail.PdfDetailActivity">
 
@@ -220,6 +221,47 @@
                 android:layout_marginTop="5dp"
                 android:text="@string/deskripsi_buku"
                 android:textColor="@color/black"/>
+
+            <!--View: to seprate-->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/gray03"
+                android:layout_marginTop="3dp"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <!--TextView: Comment label-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Komentar"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"/>
+
+                <!--ImageButton: Show dialog to add new comment-->
+                <ImageButton
+                    android:id="@+id/addCommenBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_komen"
+                    android:layout_alignParentEnd="true"/>
+
+                <!--RecyclerView: show comment-->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/commentRv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/addCommenBtn"
+                    tools:listitem="@layout/row_komen"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+            </RelativeLayout>
+
         </LinearLayout>
 
     </ScrollView>

@@ -5,4 +5,16 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">20%</item>
     </style>
+
+    <!--Style for shapeableImageView-->
+    <style name="styleCircleImage">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <!--Themes for transport background of dialog-->
+    <style name="CustomDialog" parent="Theme.MaterialComponents.Dialog">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
 </resources>

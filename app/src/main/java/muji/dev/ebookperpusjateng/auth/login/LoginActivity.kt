@@ -53,6 +53,11 @@ class LoginActivity : AppCompatActivity() {
             validateData()
         }
 
+        //handle click to forgot password activity
+        loginBin.forgotTv.setOnClickListener {
+            startActivity(Intent(this, ForgotPasswordActivity::class.java))
+        }
+
     }
 
     private var email = ""

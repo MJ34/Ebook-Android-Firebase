@@ -54,7 +54,7 @@ class AdapterPdfFavorite : RecyclerView.Adapter<AdapterPdfFavorite.HolderPdfFavo
 
         //handle click remove from favorite
         holder.removeFavBtn.setOnClickListener {
-
+            MyAplication.removeToFavorite(context, model.id)
         }
     }
 

@@ -103,7 +103,7 @@
                 android:layout_marginTop="5dp"
                 android:padding="5dp"
                 android:text="@string/forgot_password"
-                android:textColor="@color/gray03"/>
+                android:textColor="@color/black"/>
 
             <!--Login Button-->
             <Button
@@ -127,5 +127,6 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:padding="10dp"
+        android:textSize="20sp"
         android:text="@string/new_user_signup"/>
 </RelativeLayout>

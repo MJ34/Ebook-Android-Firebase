@@ -51,4 +51,10 @@
     <string name="buku_favorite">Buku Favorite</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="the_description_of_the_book">The description of the book</string>
+    <string name="tambah_komentar">Tambah Komentar</string>
+    <string name="komentar">Komentar</string>
+    <string name="submit">SUBMIT</string>
+    <string name="person_name">Person name</string>
+    <string name="komentar_user">Komentar user</string>
+    <string name="lupa_password">Lupa Password</string>
 </resources>

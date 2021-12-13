@@ -1,6 +1,7 @@
 package muji.dev.ebookperpusjateng.dashboard.admin.detail
 
 import android.Manifest
+import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -8,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
+import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -19,8 +21,11 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import muji.dev.ebookperpusjateng.MyAplication
 import muji.dev.ebookperpusjateng.R
+import muji.dev.ebookperpusjateng.dashboard.admin.categories.models.ModelComment
 import muji.dev.ebookperpusjateng.dashboard.admin.readPdf.PdfViewActivity
+import muji.dev.ebookperpusjateng.dashboard.user.adapter.AdapterComment
 import muji.dev.ebookperpusjateng.databinding.ActivityPdfDetailBinding
+import muji.dev.ebookperpusjateng.databinding.DialogCommenAddBinding
 import muji.dev.ebookperpusjateng.utils.Constants
 import java.io.FileOutputStream
 import java.lang.Exception
@@ -43,6 +48,11 @@ class PdfDetailActivity : AppCompatActivity() {
     private lateinit var progressDialog: ProgressDialog
 
     private lateinit var firebaseAuth: FirebaseAuth
+
+    //arraylist to hold comment
+    private lateinit var commentArrayList: ArrayList<ModelComment>
+    //adapter to be set recyclerView
+    private lateinit var adapterComment: AdapterComment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,6 +78,7 @@ class PdfDetailActivity : AppCompatActivity() {
         MyAplication.incrementBookViewCount(bookId)
 
         loadBookDetails()
+        showComments()
 
         //handle backButton click, goback
         binding.backBtn.setOnClickListener {
@@ -111,6 +122,111 @@ class PdfDetailActivity : AppCompatActivity() {
                 }
             }
         }
+
+        //handle click, show add comment dialog
+        binding.addCommenBtn.setOnClickListener {
+            //to add a comment, user must logged in, if not just show message you'r not login
+            if (firebaseAuth.currentUser == null) {
+                //user not logged in, can do favorite functionality
+                Toast.makeText(this, "Kamu belum login", Toast.LENGTH_SHORT).show()
+            } else {
+                //user loggd in, allow adding komen
+                addCommentDialog()
+            }
+        }
+    }
+
+    private fun showComments() {
+        //init arraylist
+        commentArrayList = ArrayList()
+
+        //db path to load comment
+        val ref = FirebaseDatabase.getInstance().getReference("Books")
+        ref.child(bookId).child("Comments")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    //clear list
+                    commentArrayList.clear()
+                    for (ds in snapshot.children) {
+                        //get data a model be carefull of spealings and data type
+                        val model = ds.getValue(ModelComment::class.java)
+                        //add to list
+                        commentArrayList.add(model!!)
+                    }
+                    //setup adapter
+                    adapterComment = AdapterComment(this@PdfDetailActivity, commentArrayList)
+                    //set data to recyclerView
+                    binding.commentRv.adapter = adapterComment
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+
+                }
+            })
+    }
+
+    private var comment = ""
+
+    private fun addCommentDialog() {
+        //inflate/bind for dialog dialog.commen_add.xml
+        val commenAddBinding = DialogCommenAddBinding.inflate(LayoutInflater.from(this))
+
+        //setup alert dialog
+        val builder = AlertDialog.Builder(this, R.style.CustomDialog)
+        builder.setView(commenAddBinding.root)
+
+        //create and show alert dialog
+        val alertDialog = builder.create()
+        alertDialog.show()
+
+        //handle click, dismiss dialog
+        commenAddBinding.backBtn.setOnClickListener {
+            alertDialog.dismiss()
+        }
+
+        //handle click, and comment
+        commenAddBinding.submitBtn.setOnClickListener {
+            //get data
+            comment = commenAddBinding.komenEt.text.toString().trim()
+            //validate data
+            if (comment.isEmpty()) {
+                Toast.makeText(this, "Masukan Komentar...", Toast.LENGTH_SHORT).show()
+            } else {
+                alertDialog.dismiss()
+                addComment()
+            }
+        }
+    }
+
+    private fun addComment() {
+        //show progress
+        progressDialog.setMessage("Menambahkan Komentar")
+        progressDialog.show()
+
+        //timestamp for comment id, comment timestamp etc.
+        val timestamp = "${System.currentTimeMillis()}"
+
+        //setup data to add in db for comment
+        val hashMap = HashMap<String, Any>()
+        hashMap["id"] = "$timestamp"
+        hashMap["bookId"] = "$bookId"
+        hashMap["timestamp"] = "$timestamp"
+        hashMap["comment"] = "$comment"
+        hashMap["uid"] = "${firebaseAuth.uid}"
+
+        //Db path to add data into it
+        //Books, bookId > Comment > CommentId > commentData
+        val ref = FirebaseDatabase.getInstance().getReference("Books")
+        ref.child(bookId).child("Comments").child(timestamp)
+            .setValue(hashMap)
+            .addOnSuccessListener {
+                progressDialog.dismiss()
+                Toast.makeText(this, "Komentar ditambahkan...", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener {e->
+                progressDialog.dismiss()
+                Toast.makeText(this, "Gagal menambahkan Komentar ${e.message}...", Toast.LENGTH_SHORT).show()
+            }
     }
 
     private val requestStoragePermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) {isGranted: Boolean ->
@@ -223,6 +339,8 @@ class PdfDetailActivity : AppCompatActivity() {
                     val uid = "${snapshot.child("uid").value}"
                     bookUrl = "${snapshot.child("url").value}"
                     val viewsCount = "${snapshot.child("viewsCount").value}"
+
+
                     //format date
                     val  date = MyAplication.formatTimestamp(timestamp.toLong())
                     //Load pdf category
@@ -298,24 +416,6 @@ class PdfDetailActivity : AppCompatActivity() {
                 //Failed to add to fav
                 Log.d(TAG, "addToFavorite: Failed to added to fav due to ${e.message}")
                 Toast.makeText(this, "Failed to added to fav due to ${e.message}", Toast.LENGTH_SHORT).show()
-            }
-    }
-
-    private fun removeToFavorite() {
-        Log.d(TAG, "removeToFavorite: Removing to fav")
-
-        //database ref
-        val ref = FirebaseDatabase.getInstance().getReference("Users")
-        ref.child(firebaseAuth.uid!!).child("Favorites").child(bookId)
-            .removeValue()
-            .addOnSuccessListener {
-                Log.d(TAG, "removeToFavorite: Removing to fav")
-                Toast.makeText(this, "Removing to fav", Toast.LENGTH_SHORT).show()
-            }
-            .addOnFailureListener { e->
-                //Failed to add to fav
-                Log.d(TAG, "removeToFavorite: Failed to remove to fav due to ${e.message}")
-                Toast.makeText(this, "Failed to remove to fav due to ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
 }

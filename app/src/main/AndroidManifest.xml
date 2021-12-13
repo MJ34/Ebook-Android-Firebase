@@ -19,6 +19,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EbookPerpusJateng">
         <activity
+            android:name=".auth.login.ForgotPasswordActivity"
+            android:exported="false" />
+        <activity
             android:name=".dashboard.profile.ProfileEditActivity"
             android:exported="false" />
         <activity

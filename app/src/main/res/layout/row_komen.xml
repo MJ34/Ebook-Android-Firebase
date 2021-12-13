@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginBottom="1dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="0dp"
+    app:contentPadding="0dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!--ImageView: Profile image of user who komen-->
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/profileTv"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_person_gray"
+            android:layout_marginEnd="8dp"
+            app:shapeAppearanceOverlay="@style/styleCircleImage"
+            app:strokeColor="@color/gray01"
+            app:strokeWidth="1dp"/>
+
+        <!--TextView: name of the user who komen-->
+        <TextView
+            android:id="@+id/namaTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/profileTv"
+            android:text="@string/person_name"
+            android:layout_toStartOf="@id/dateTv"
+            android:textColor="@color/black"
+            android:textSize="16sp"/>
+
+        <!--TextView: date of the user who komen-->
+        <TextView
+            android:id="@+id/dateTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dd_mm_yyyy"
+            android:layout_marginTop="5dp"
+            android:textSize="12sp"
+            android:textColor="@color/gray02"
+            android:layout_alignParentEnd="true"/>
+
+        <!--TextView: user komen-->
+        <TextView
+            android:id="@+id/komenTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/namaTv"
+            android:layout_toEndOf="@id/profileTv"
+            android:text="@string/komentar_user"
+            android:textColor="@color/gray02"
+            android:textSize="12sp"
+            android:layout_marginTop="5dp"/>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
