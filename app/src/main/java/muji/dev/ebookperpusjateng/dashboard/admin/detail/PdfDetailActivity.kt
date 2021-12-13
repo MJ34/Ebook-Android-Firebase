@@ -104,7 +104,7 @@ class PdfDetailActivity : AppCompatActivity() {
                 //user is logged in, we can do favorite functionality
                 if (isMyFavorite) {
                     //already in fav, remove
-                    removeToFavorite()
+                    MyAplication.removeToFavorite(this, bookId)
                 } else {
                     //not in fav, add
                     addToFavorite()
@@ -241,7 +241,7 @@ class PdfDetailActivity : AppCompatActivity() {
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    TODO("Not yet implemented")
+
                 }
             })
     }

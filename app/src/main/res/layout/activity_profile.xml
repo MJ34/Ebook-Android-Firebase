@@ -93,7 +93,7 @@
         android:layout_marginTop="8dp"
         android:text="@string/xxx_email_com"
         android:textColor="@color/black"
-        android:textSize="12sp"/>
+        android:textSize="12sp" />
 
     <LinearLayout
         android:id="@+id/detailsLL"
@@ -177,5 +177,33 @@
 
     </LinearLayout>
 
+    <!--View: to separate-->
+    <View
+        android:id="@+id/view1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/detailsLL"
+        android:background="@color/gray03"
+        android:layout_marginTop="5dp"/>
+
+    <!--TextView: Label-->
+    <TextView
+        android:id="@+id/favLabelTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/buku_favorite"
+        android:layout_below="@id/view1"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:padding="5dp"/>
+
+    <!--Recyclerview: show for book-->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/favRV"
+        android:layout_below="@id/favLabelTv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/row_pdf_favorite"/>
 
 </RelativeLayout>

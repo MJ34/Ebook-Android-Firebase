@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="140dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginBottom="5dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="0dp"
+    app:contentPadding="5dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!--Pdf thumbnail, progress bar-->
+        <RelativeLayout
+            android:id="@+id/pdfRl"
+            android:layout_width="100dp"
+            android:layout_height="140dp"
+            android:layout_marginEnd="5dp"
+            android:background="@color/gray02">
+
+            <!--Pdf view-->
+            <com.github.barteksc.pdfviewer.PDFView
+                android:id="@+id/pdfView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+            <!--ProgressBar: show while pdf is loading-->
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </RelativeLayout>
+
+        <!--Title-->
+        <TextView
+            android:id="@+id/titleTv"
+            style="@style/TextAppearance.MaterialComponents.Headline6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/pdfRl"
+            android:layout_marginEnd="5dp"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:text="@string/book_title"/>
+
+        <!--Button: remove from favorite-->
+        <ImageButton
+            android:id="@+id/removeFavBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:padding="5dp"
+            android:src="@drawable/ic_favorite_white"
+            android:background="@android:color/transparent"
+            app:tint="@color/black" />
+
+        <!--Deskription-->
+        <TextView
+            android:id="@+id/descTv"
+            style="@style/TextAppearance.MaterialComponents.Body2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/titleTv"
+            android:layout_toEndOf="@id/pdfRl"
+            android:maxLines="4"
+            android:text="@string/the_description_of_the_book"
+            android:ellipsize="end"/>
+
+        <!--Category-->
+        <TextView
+            android:id="@+id/catTv"
+            style="@style/TextAppearance.MaterialComponents.Caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:text="@string/category"
+            android:maxLines="1"/>
+
+        <!--Size of pdf-->
+        <TextView
+            android:id="@+id/sizeTv"
+            style="@style/TextAppearance.MaterialComponents.Caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_toEndOf="@id/pdfRl"
+            android:maxLines="1"
+            android:text="13MB"/>
+
+        <!--Data Added-->
+        <TextView
+            android:id="@+id/dateTv"
+            style="@style/TextAppearance.MaterialComponents.Caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dd_mm_yyyy"
+            android:maxLines="1"
+            android:layout_alignParentBottom="true"
+            android:layout_toEndOf="@id/sizeTv"
+            android:textAlignment="center"
+            android:layout_toStartOf="@+id/catTv"/>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
