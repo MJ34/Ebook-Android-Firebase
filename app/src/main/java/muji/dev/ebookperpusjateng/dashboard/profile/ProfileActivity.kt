@@ -1,10 +1,14 @@
 package muji.dev.ebookperpusjateng.dashboard.profile
 
+import android.app.ProgressDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -23,14 +27,30 @@ class ProfileActivity : AppCompatActivity() {
     //arraylist to hold books
     private lateinit var booksArrayList: ArrayList<ModelPdf>
     private lateinit var adapterPdfFavorite: AdapterPdfFavorite
+    //Firebase current user
+    private lateinit var firebaseUser: FirebaseUser
+    //progress dialog
+    private lateinit var progressDialog: ProgressDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //reset default values
+        binding.akunTypeTv.text = "N/A"
+        binding.memberDateTv.text = "N/A"
+        binding.favBookTv.text = "N/A"
+        binding.accountStatTv.text = "N/A"
+
         //firebase init
         firebaseAuth = FirebaseAuth.getInstance()
+        firebaseUser = firebaseAuth.currentUser!!
+
+        //init progress dialog
+        progressDialog = ProgressDialog(this)
+        progressDialog.setTitle("Please wait...!")
+        progressDialog.setCanceledOnTouchOutside(false)
 
         loadUserInfo()
         loadFavoriteBooks()
@@ -44,9 +64,60 @@ class ProfileActivity : AppCompatActivity() {
         binding.profEdtBtn.setOnClickListener {
             startActivity(Intent(this, ProfileEditActivity::class.java))
         }
+
+        //handle click, verify user if not
+        binding.accountStatTv.setOnClickListener {
+            if (firebaseUser.isEmailVerified) {
+                //user is verified
+                Toast.makeText(this, "Already verified...!", Toast.LENGTH_SHORT).show()
+            } else {
+                //user isn't verified, show confirmation dialog before verification
+                emailVericationDialog()
+            }
+        }
+    }
+
+    private fun emailVericationDialog() {
+        //show confirmation dialog
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Verify Email")
+            .setMessage("Email verifikasi sudah dikirim, cek email untuk instruksi selanjutnya ${firebaseUser.email}")
+            .setPositiveButton("SEND"){d,e->
+                sendEmailVerification()
+            }
+            .setNegativeButton("CANCEL"){d,e->
+                d.dismiss()
+            }
+            .show()
+    }
+
+    private fun sendEmailVerification() {
+        //show progress dialog
+        progressDialog.setMessage("Mengirim instruksi email verifikasi ke email ${firebaseUser.email}")
+        progressDialog.show()
+
+        //send intructions
+        firebaseUser.sendEmailVerification()
+            .addOnSuccessListener {
+                //successfully sent
+                progressDialog.dismiss()
+                Toast.makeText(this, "Instruksi dikirim! check email anda", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener {e->
+                //failed send
+                progressDialog.dismiss()
+                Toast.makeText(this, "Gagal mengirim email karena ${e.message}", Toast.LENGTH_SHORT).show()
+            }
     }
 
     private fun loadUserInfo() {
+        //check if user verified or not, changes may effect ofter re login when you verify email
+        if (firebaseUser.isEmailVerified) {
+            binding.accountStatTv.text = "Sudah Verifikasi"
+        } else {
+            binding.accountStatTv.text = "Belum diverifikasi"
+        }
+
         //db reference to load user info
         val ref = FirebaseDatabase.getInstance().getReference("Users")
         ref.child(firebaseAuth.uid!!)

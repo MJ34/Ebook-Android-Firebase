@@ -115,6 +115,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/account"
+                android:textSize="12sp"
+                android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textStyle="bold"/>
 
@@ -122,6 +124,8 @@
                 android:id="@+id/akunTypeTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:textAlignment="center"
                 android:text="@string/n_n"
                 android:textColor="@color/black" />
 
@@ -139,6 +143,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Member"
+                android:textSize="12sp"
+                android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textStyle="bold"/>
 
@@ -146,6 +152,8 @@
                 android:id="@+id/memberDateTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:textAlignment="center"
                 android:text="@string/n_n"
                 android:textColor="@color/black" />
 
@@ -164,13 +172,45 @@
                 android:layout_height="wrap_content"
                 android:text="@string/buku_favorite"
                 android:textColor="@color/black"
+                android:textSize="12sp"
+                android:textAlignment="center"
                 android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/favBookTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:textAlignment="center"
                 android:text="@string/n_n"
+                android:textColor="@color/black" />
+
+        </LinearLayout>
+
+        <!--Account Status-->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/account_status"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:textAlignment="center"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/accountStatTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:textAlignment="center"
+                android:text="@string/belum_verifikasi"
                 android:textColor="@color/black" />
 
         </LinearLayout>

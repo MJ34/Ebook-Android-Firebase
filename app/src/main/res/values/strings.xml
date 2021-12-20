@@ -57,4 +57,6 @@
     <string name="person_name">Person name</string>
     <string name="komentar_user">Komentar user</string>
     <string name="lupa_password">Lupa Password</string>
+    <string name="belum_verifikasi">Belum Verifikasi</string>
+    <string name="account_status">Account Status</string>
 </resources>
